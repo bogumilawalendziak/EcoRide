@@ -4,11 +4,12 @@ LABEL authors="bogumila_walendziak"
 WORKDIR /app
 
 COPY go.mod go.sum ./
+RUN go mod tidy
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o EcoRide .
+RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o EcoRide .
 
 EXPOSE 8080
 

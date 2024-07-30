@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-	_ "time"
 )
 
 func ListVehicles(c *gin.Context) {
@@ -39,18 +38,14 @@ func AddVehicle(c *gin.Context) {
 	c.JSON(http.StatusOK, newVehicle)
 }
 
-func ReserveVehicle(c *gin.Context) {
-	var request ReserveRequest
-
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+func ReserveVehicle(request ReserveRequest) {
 
 	var reservation = createReservation(request)
 
 	response := getReservationResponse(&reservation)
-	c.JSON(http.StatusOK, response)
+
+	fmt.Printf("sending response order number : " + response.OrderNumber)
+	sendReserveResponse(response)
 }
 
 func createReservation(request ReserveRequest) Reservation {
@@ -73,7 +68,7 @@ func createReservation(request ReserveRequest) Reservation {
 		Vehicle:     vehicle,
 	}
 
-	db.Create(reservation)
+	db.Create(&reservation)
 
 	return reservation
 }

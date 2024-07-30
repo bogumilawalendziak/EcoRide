@@ -45,3 +45,19 @@ type Reservation struct {
 	User        User    `gorm:"foreignKey:UserID"`
 	Vehicle     Vehicle `gorm:"foreignKey:VehicleID"`
 }
+
+type LocationUpdate struct {
+	OrderNumber string    `json:"order_number"`
+	StartTime   time.Time `json:"start_time"`
+	Latitude    float64   `json:"latitude"`
+	Longitude   float64   `json:"longitude"`
+	Timestamp   int64     `json:"timestamp"`
+}
+
+type Config struct {
+	BootstrapServers         string
+	GroupId                  string
+	ReservationRequestTopic  string
+	ReservationResponseTopic string
+	UpdateLocationTopic      string
+}
